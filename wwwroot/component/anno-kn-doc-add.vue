@@ -74,7 +74,7 @@
                         <img class="icon-file"
                              v-if="scope.row.type == 'folder'"
                              src="../img/Icon/folder.png" />
-                        <template v-else-if="(scope.row.type == 'doc')">
+                        <template v-else-if="(scope.row.type == 'doc')" >
                             <img class="icon-file" v-if="getFileType(scope.row.extName)" :src="getFileType(scope.row.extName)" />
                             <img class="icon-file" v-else src="../img/Icon/unknown.png" />
                         </template>
