@@ -1,11 +1,7 @@
 <template>
     <div>
         <div class="upload-title">
-			<!--
-            <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item v-for="item in breadcrumbList" @click="breadcrumbClick(item)">{{item.name}}</el-breadcrumb-item>                
-            </el-breadcrumb>
-			-->
+
 			<span v-for="(item,index) in breadcrumbList" @click="breadcrumbClick(item)" :key="item.ID">
 				<i v-if="index>0" class="el-icon-arrow-right"></i>
 				<a>{{item.name}}</a>
@@ -176,9 +172,6 @@
     </div>
 </template>
 <script>
-    // Vue.use(httpVueLoader);
-
-    // import annoOpenFile from './anno-open-file.vue';
      module.exports = {
         components: {
             'anno-open-file': httpVueLoader('./anno-open-file.vue')
@@ -301,7 +294,6 @@
                     isLeaf: 'leaf'
                 },
                 tempRowData: null,//行设置、行移动使用的临时行数据对象
-                //   newFolderName:"",
                 stateOptions: [
                     {
                         value: "0",
@@ -350,9 +342,7 @@
             }
             //用于数据初始化
             document.title = "我的文件";
-            //console.log("当前目录-->",this.currentFolder);
             this.LoadFolderData(this.currentFolder);
-            //this.keyupAnno();
         },
         computed: {
             getFileType() {
@@ -379,7 +369,6 @@
         },
         methods: {
             LoadFolderData: function (folderObj) {
-                //debugger;
                 let that = this;
 
                 if (that.folderList.length == 0 || that.isModifiedState) {
@@ -389,10 +378,6 @@
                         return;
                     }
                     that.userInfo = JSON.parse(localStorage.profile);
-                    //input.member = "{ID:'210527169232896'}";
-                    //let userId = localStorage.profile.ID;
-                    console.log("localStorage.profile-->", that.userInfo);
-
                     input.member = "{ID:'" + that.userInfo.ID + "'}";
                     anno.process(input, "Anno.Plugs.Logic/KNDocument/GetFolderListByMember", function (data) {
                         console.log("folderData-->", data);
@@ -407,7 +392,6 @@
                         console.log("docData-->", data);
                         if (data.status) {
                             that.docList = data.outputData;
-
                             //加载文件区根目录的内容pdfurl
                             that.loadCurrentFolder(folderObj);
                             //更新数据后，重置该状态
@@ -420,41 +404,6 @@
                     //加载文件区根目录的内容
                     that.loadCurrentFolder(folderObj);
                 }
-                /*
-                docList = [
-                    {
-                        "DocName": "程序员：新手到专家的5个阶段.docx",
-                        "ExtName": ".docx",
-                        "Size": "205000",
-                        "Path": null,
-                        "UploaderID": "210527169232896",
-                        "UploaderName": "Anno管理员",
-                        "UploadTime": "2022-08-18T21:24:56.24",
-                        "DocState": "0",
-                        "SecLevel": "0",
-                        "IsDeleted": false,
-                        "FolderName": null,
-                        "FolderId": null,
-                        "ID": "563166942273536"
-                    }
-                ];
-
-                folderList = [
-                    {
-                        "FolderName": "项目目录",
-                        "Summary": null,
-                        "CreaterID": "210527169232896",
-                        "CreaterName": "Anno admin",
-                        "CreatTime": "2022-08-18T20:33:39.443",
-                        "LastModified": "2022-08-18T20:33:39.443",
-                        "FolderType": "0",
-                        "SecLevel": "0",
-                        "IsDelete": false,
-                        "ParentId": "2022081820270001",
-                        "ID": "90001"
-                    }
-                ];
-                */
             },
 
             //加载指定文件夹的内容
@@ -566,29 +515,10 @@
             },
 
             onUploadChange: function (file, fileList) {
-                //console.log("onUploadChange",file,fileList);
-                //this.formData.file = file;
-                //this.formData.DocName = file.name;
-                //this.formData.ExtName = file.name.replace(/.+\./, "");
-                //this.formData.Size = file.size;
-                //this.formData.Path = currentFolder.name;
-                //console.log(this.formData);
             },
             onUploadSuccess: function (response, file, fileList) {
                 console.log("onUploadSuccess-->", response);
                 console.log("onUploadSuccess-file->", file);
-                /*
-                  if (data.status === true) {
-                    that.$message({
-                      showClose: true,
-                      message: "保存成功",
-                      type: "success",
-                    });
-                    window.location.href = "./knowledge/index.html";
-                  } else {
-                    that.$message.error(data.msg);
-                  }
-                 */
                 let obj = {
                     ID: response.outputData.ID,
                     type: "doc",
@@ -600,13 +530,6 @@
                     secertLevel: 0,
                     showFucArea: false
                 };
-                /*fileList.forEach((v) => {
-                    obj = {
-                        name: v.name,
-                        type: "doc",
-                        ext: v.ExtName
-                    }
-                })*/
                 this.currentFolderData.push(obj)
 
                 //发生数据更新，设置该状态
@@ -615,16 +538,6 @@
             onUploadError: function (err, file, fileList) {
                 console.log("onUploadError-->", err);
             },
-
-            //onUpload: function (file) {
-            //  let upFile = file.file;
-            //  this.formData.file = upFile;
-            //  this.formData.DocName = upFile.name;
-            //  this.formData.ExtName = upFile.name.replace(/.+\./, "");
-            //  this.formData.Size = upFile.size;
-            //  console.log(this.formData.DocName);
-            //  console.log(this.formData.ExtName);
-            //},
 
             addFolder: function () {
                 if (this.currentFolderData.length > 0 && this.currentFolderData[0].isModifiedRow) return;
@@ -665,7 +578,6 @@
                         anno.process(input, "Anno.Plugs.Logic/KNDocument/UpdateFolderName", function (data) {
                             console.log("UpdateFolderName-->", data);
                             if (data.status) {
-                                //row.ID = data.outputData.ID;
                             }
                             that.$message(data.msg);
                         });
@@ -679,7 +591,6 @@
                     anno.process(input, "Anno.Plugs.Logic/KNDocument/UpdateDocName", function (data) {
                         console.log("UpdateDocName-->", data);
                         if (data.status) {
-                            //row.ID = data.outputData.ID;
                         }
                         that.$message(data.msg);
                     });
@@ -712,28 +623,7 @@
                     // this.$message("预览文件【" + row.name + "】");
                 }
             },
-            handleClose() {
-                this.dialogVisible = false
-             },
-            openFiletType(row) {
-                //修改文件名称
-                let input = anno.getInput();
-                let param = {ID: row.ID}
-                if(row.extName === "pdf") {
-                    input.doc = param;
-                    let url = "Anno.Plugs.Logic/KNDocument/GetDocumentModelById";
-                    anno.process(input, url, function (data) {
-                        console.log("打开->", data);
-                        if (data.status) {
-                        let blob = new Blob([res.data], { type: "application/pdf" });
-                        const url = URL.createObjectURL(blob);
-                        
-                        // this.pdfurl = url;
 
-                        }
-                    });
-                }
-            },
             rowModify: function (row) {
                 this.$message("行编辑");
                 if (!row.isModifiedRow)
@@ -749,14 +639,10 @@
                 if (list.length == 0) this.$message("没有可选的文件夹");
 
                 //初始化目录树，重新生成
-                //if(this.folderTreeData.length==0 || this.isModifiedState){
                     this.folderTreeData=[];
                     this.buildTree(list, this.folderTreeData, 0);
-                //}
                 console.log("folderTreeData-->", this.folderTreeData);
                 //默认设置当前父节点选中
-                //this.$refs.tree.setCheckedKeys([row.parent]);
-
                 this.dialogTreeVisible = true;
                 this.tempRowData = row;
                 //发生数据更新，设置该状态
@@ -765,7 +651,6 @@
             //基于目录数组生成目录树
             buildTree: function (list, result, fid) {
                 let that = this;
-                //let result = list.filter(l => l.ParentId == fid);
                 list.forEach(function (f, index) {
                     if (f.ParentId == fid) {
                         let childArr = [];
@@ -780,11 +665,6 @@
                 });
             },
             handleNodeClick: function (data) {
-                console.log("selectedTreeNode-->", data);
-                //目标位置为当前所在目录
-                // if(data.id == this.tempRowData.parent){
-                //     this.$message("位置未发生变化");
-                // }
                 //目标位置为待移动的对象
                 if(data.id == this.tempRowData.ID){
                     this.$message("不能移动到自己下面");
@@ -823,15 +703,6 @@
                         that.currentFolderData.forEach((item, index) => {
                             if (item.ID == input.id) {
                                 that.currentFolderData.splice(index, 1);
-                                /*//更新基础数据，避免重新请求接口
-                                if (objType == "folder") {
-                                    let folderObj = that.folderList.find(f => f.ID == input.id);
-                                    folderObj.parent = input.parent;
-                                }
-                                else {
-                                    let docObj = that.docList.find(d => d.ID == input.id);
-                                    docObj.parent = input.parent;
-                                }*/
                             }
                         });
                     }
@@ -842,26 +713,7 @@
                 that.isModifiedState = true;
 
             },
-            //loadNode: function (node, resolve) {
-            //    if (node.level === 0) {
-            //        return resolve(
-            //            //[{ name: 'region' }]
-            //            that.folderTreeData.filter(n => n.parent == 0);
-            //        );
-            //    }
-            //    if (node.level > 1) return resolve([]);
 
-            //    setTimeout(() => {
-            //        const data = [{
-            //            name: 'leaf',
-            //            leaf: true
-            //        }, {
-            //            name: 'zone'
-            //        }];
-
-            //        resolve(data);
-            //    }, 500);
-            //},
             rowDelete: function (row) {
                 let that = this;
                 that.$message("行回收");
@@ -887,8 +739,6 @@
                 that.isModifiedState = true;
             },
             rowSetting: function (row) {
-                console.log(" row.secertLevel", row.secertLevels)
-                //this.$message("行设置");
                 this.dialogRadioVisible = true;
                 this.tempRowData = row;
                 this.radioSecret = row.secertLevel.toString();
@@ -896,7 +746,6 @@
             },
             //文件、文件夹权限-提交修改
             setSecretSubmit: function () {
-
                 let that = this;
                 that.$message("文件权限-提交修改");
                 //修改文件权限
@@ -919,12 +768,7 @@
                 });
 
                 that.dialogRadioVisible = false;
-                //还原相关值记录
-                //that.radioSecret="0";
-                //that.tempRowData=null;
 
-                //发生数据更新，设置该状态
-                //that.isModifiedState = true;
             },
             getCurrentTime: function () {
                 let year = new Date().getFullYear();
@@ -941,79 +785,6 @@
 
                 return dateString.substr(0, 16);
             },
-            //postUpload: function (file) {
-            //  return axios({
-            //    url: "upload",
-            //    method: "post",
-            //    data: file,
-            //    headers: {
-            //      "Content-Type": "multipart/form-data",
-            //    },
-            //  });
-            //},
-            //getFolderData: function () {
-            //  var that = this;
-            //  var input = anno.getInput();
-            //  input.uid = -1;
-            //  anno.process(
-            //    input,
-            //    "Anno.Plugs.Logic/KNDocument/GetUserFolders",
-            //    function (data) {
-            //      if (data.status === true) {
-            //        that.currentFolderData = data.outputData.lr;
-            //      } else {
-            //        that.$message.error("获取角色：" + data.msg);
-            //      }
-            //    }
-            //  );
-            //},
-            //submitForm: function () {
-            //  var that = this;
-            //  this.$refs["elForm"].validate(function (valid) {
-            //    if (!valid) return;
-            //    //if(that.roleDataTable.length<=0){
-            //    //   that.$message.error("至少选择一个角色");
-            //    //  return;
-            //    //}
-            //    that.addDocument();
-            //  });
-            //},
-            //resetForm: function () {
-            //  this.$refs["elForm"].resetFields();
-            //},
-            //keyupAnno: function () {
-            //  var that = this;
-            //  document.onkeydown = function (e) {
-            //    var _key = window.event.keyCode;
-            //    if (_key === 13) {
-            //      that.submitForm();
-            //    }
-            //  };
-            //},
-            //addDocument: function () {
-            //  var that = this;
-            //  var input = anno.getInput();
-            //  //获取文档的表单对象
-            //  input.udoc = JSON.stringify(that.formData);
-            //  //获取目录的表单对象
-            //  input.ufolder = JSON.stringify(that.roleDataTable);
-            //  anno.process(
-            //    input,
-            //    "Anno.Plugs.Logic/KNDocument/AddDocument",
-            //    function (data) {
-            //      if (data.status === true) {
-            //        that.$message({
-            //          showClose: true,
-            //          message: "保存成功",
-            //          type: "success",
-            //        });
-            //        window.location.href = "./knowledge/index.html";
-            //      } else {
-            //        that.$message.error(data.msg);
-            //      }
-            //    }
-            //  );
-            //},
             handleSelectionChange: function (val) {
 
             },
@@ -1028,7 +799,6 @@
                 row.showFucArea = false;
             },
             tableRowClassName: function (row, index) {
-                //console.log("rowclass-->",row)
                 if (row.secertLevel == 0) {
                     return "warning-row";
                 } else if (row.secertLevel == 1) {
@@ -1107,8 +877,6 @@
         .list li {
             border: solid 0px blue;
             line-height: 30px;
-            /* list-style-type:none;
-        list-style-image: url(images/icon.gif); */
         }
 
     .li_hover {

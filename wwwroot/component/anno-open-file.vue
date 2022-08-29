@@ -7,21 +7,15 @@
             :direction="direction"
             :before-close="handleClose"
             >
-
-                <!-- pdf用嵌套的iframe -->
-                <!-- <slot> -->
-                        <!-- :src="pdfurl" -->
-                        <!-- type="application/x-google-chrome-pdf" -->
-                    <div >
-                        <iframe
-                        width="100%"
-                        height="100%"
-                        src="http://www.baidu.com"
-                        type="application/x-google-chrome-pdf"
-                        >
-                        </iframe>
-                    </div>
-                <!-- </slot> -->
+              <div >
+                  <iframe
+                  width="100%"
+                  height="100%"
+                  src="http://www.baidu.com"
+                  type="application/x-google-chrome-pdf"
+                  >
+                  </iframe>
+              </div>
             </el-drawer>
   </div>
 </template>
