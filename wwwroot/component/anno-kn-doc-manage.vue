@@ -123,8 +123,8 @@
         <!--权限设置对话框-->
         <el-dialog title="设置文件/文件夹权限" :visible.sync="dialogRadioVisible" >
 			<el-radio-group v-model="radioSecret">
-				<el-radio :label="0" isChecked="true">所有人可见</el-radio>
-				<el-radio :label="1">仅自己可见</el-radio>
+				<el-radio label="0" isChecked="true">所有人可见</el-radio>
+				<el-radio label="1">仅自己可见</el-radio>
 			</el-radio-group>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogRadioVisible = false">取 消</el-button>
@@ -150,13 +150,25 @@
                 <el-button type="primary" @click="moveSubmit">确 定</el-button>
             </div>
         </el-dialog>
+   {{openfile}}<anno-open-file  :visible="visible.fileDialog" v-if="openfile"></anno-open-file>
+
     </div>
 </template>
 
 <script>
-    module.exports = {
-        data: function () {
+    // Vue.use(httpVueLoader);
+
+    // import annoOpenFile from './anno-open-file.vue';
+     module.exports = {
+        components: {
+            'anno-open-file': httpVueLoader('./anno-open-file.vue')
+        },
+        data() {
             return {
+                openfile: false,
+                visible: {
+                    fileDialog: 0
+                },
                 span: 8,
                 currentFolder: { ID: "0", name: "根目录" },
                 //当前目录下的文件夹和文件列表
@@ -256,7 +268,7 @@
                 uploadParam: {
                     folderId: 0, profile: {}
                 },
-                radioSecret: "0",
+                radioSecret: 1,
                 dialogRadioVisible: false,//权限设置对话框
                 folderTreeData: [],
                 dialogTreeVisible: false,//目录树对话框
@@ -672,7 +684,9 @@
 
                     this.LoadFolderData(this.currentFolder);
                 } else {
-                    //文件预览
+                    // //文件预览
+                     this.openfile = true;
+                    this.visible.fileDialog = new Date().getTime();
                     this.$message("预览文件【" + row.name + "】");
                 }
             },

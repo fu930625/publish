@@ -156,7 +156,7 @@
 <script>
     module.exports = {
         data: function () {
-            return {
+            return { 
                 span: 8,
                 currentFolder: { ID: "0", name: "根目录" },
                 //当前目录下的文件夹和文件列表
@@ -671,11 +671,10 @@
                     this.$message("打开文件夹【" + row.name + "】");
                     //加载文件区根目录的内容
                     this.currentFolder = row;
-
                     this.LoadFolderData(this.currentFolder);
                 } else {
                     //文件预览
-                    this.$message("预览文件【" + row.name + "】");
+                    this.$message("预览文件1【" + row.name + "】");
                 }
             },
             rowModify: function (row) {
