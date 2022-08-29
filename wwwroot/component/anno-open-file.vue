@@ -8,15 +8,18 @@
       :before-close="handleClose">
 
          <!-- pdf用嵌套的iframe -->
-      <!-- <div v-if="fileRowData.type == 'pdf'">
-        <iframe
-          :src="pdfurl"
-          type="application/x-google-chrome-pdf"
-          width="100%"
-          height="100%"
-        />
-      </div> -->
-      <span>我来啦!{{fileRowData}}</span>
+         <slot>
+
+          <!-- <div v-if="fileRowData.extName == 'pdf'">
+            11
+            <iframe
+              :src="pdfurl"
+              type="application/x-google-chrome-pdf"
+              width="100%"
+              height="100%"
+            />
+          </div> -->
+         </slot>
     </el-drawer>
   </div>
 </template>
@@ -43,6 +46,7 @@ module.exports = {
       dialogVisible: false,
       direction: 'rtl',
       fileRowData: this.value,
+      pdfurl: ''
     };
   },
     watch: {
@@ -51,11 +55,17 @@ module.exports = {
           console.log("newValue, oldValue",newValue, oldValue)
             if (newValue !== oldValue) {
               this.dialogVisible = true;
-              // this.openFiletType(this.fileRowData)
+              this.openFiletType(this.fileRowData)
             }
         },
         immediate: true,
       },
+      value:{
+         handler(newValue, oldValue) {
+          this.fileRowData = newValue
+        },
+        immediate: true,
+      }
 
     },
   created: function () {
@@ -72,18 +82,22 @@ module.exports = {
     },
     openFiletType(row) {
       //修改文件名称
-      // let input = anno.getInput();
-      // if(file.type === "pdf") {
-      //     input.id = row.ID;
-      //     let  url = "Anno.Plugs.Logic/KNDocument/GetDocumentModelById";
-      //     anno.process(input, url, function (data) {
-      //         console.log("打开->", data);
-      //         if (data.status) {
+      let input = anno.getInput();
+      let param = {ID: row.ID}
+      if(row.extName === "pdf") {
+          input.doc = param;
+          let url = "Anno.Plugs.Logic/KNDocument/GetDocumentModelById";
+          anno.process(input, url, function (data) {
+              console.log("打开->", data);
+              if (data.status) {
+              let blob = new Blob([res.data], { type: "application/pdf" });
+              const url = URL.createObjectURL(blob);
+              
+              this.pdfurl = url;
 
-      //         }
-      //         that.$message(data.msg);
-      //     });
-      // }
+              }
+          });
+      }
     }
   },
 };
