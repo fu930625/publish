@@ -150,11 +150,11 @@
                 <el-button type="primary" @click="moveSubmit">确 定</el-button>
             </div>
         </el-dialog>
-   {{openfile}}<anno-open-file  :visible="visible.fileDialog" v-if="openfile"></anno-open-file>
+   {{fileRow}}<anno-open-file  :visible="visible.fileDialog" v-if="openfile"  v-model="fileRow"></anno-open-file>
 
+<!-- // v-model="fileRow" -->
     </div>
 </template>
-
 <script>
     // Vue.use(httpVueLoader);
 
@@ -166,6 +166,7 @@
         data() {
             return {
                 openfile: false,
+                fileRow: {},
                 visible: {
                     fileDialog: 0
                 },
@@ -630,7 +631,6 @@
                         input.ufolder = '{FolderName:"' + row.name + '",CreaterID:"' + that.userInfo.ID
                             + '",CreaterName:"' + that.userInfo.name + '",SecLevel:0,FolderType:0,ParentId:' + that.currentFolder.ID + '}';
                         anno.process(input, "Anno.Plugs.Logic/KNDocument/AddFolder", function (data) {
-                            console.log("AddFolder-->", data);
                             if (data.status) {
                                 row.ID = data.outputData.ID;
                             }
@@ -684,10 +684,11 @@
 
                     this.LoadFolderData(this.currentFolder);
                 } else {
-                    // //文件预览
-                     this.openfile = true;
+                    //文件预览
+                    this.openfile = true;
                     this.visible.fileDialog = new Date().getTime();
                     this.$message("预览文件【" + row.name + "】");
+                    this.fileRow = row;
                 }
             },
             rowModify: function (row) {
