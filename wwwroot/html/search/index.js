@@ -163,9 +163,19 @@ function Init() {
             // window.open(item.href, '_blank')
             window.location.href = item.url
           },
-          handleSearch() {
+          handleSearch(value) {
+            console.log("value",value)
             this.isSearchResult = false;
-            window.location.href = './result.html';
+            var input = anno.getInput();
+            let that = this;
+            input.pdf_keywords = value;
+              anno.process(input,"127.0.0.1:8983/solr/ImportPDFCore/select", function (data) {
+              if (data.status) {
+              } else {
+                that.$message.error(data.msg);
+              }
+            });
+            // window.location.href = './result.html';
           },
           hightLight(el, binding) {
             const match = binding.value;
