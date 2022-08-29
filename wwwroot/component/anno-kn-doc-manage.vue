@@ -150,9 +150,29 @@
                 <el-button type="primary" @click="moveSubmit">确 定</el-button>
             </div>
         </el-dialog>
-   {{fileRow}}<anno-open-file  :visible="visible.fileDialog" v-if="openfile"  v-model="fileRow"></anno-open-file>
+        <!-- 打开文件类型 -->
+        <!-- <div>
+         <el-drawer
+            title="我是标题"
+            :visible.sync="dialogVisible"
+            size="100%"
+            :direction="direction"
+            :before-close="handleClose"
+            >
 
-<!-- // v-model="fileRow" -->
+                <div>
+                    <iframe
+                    width="100%"
+                    height="100%"
+                    src="http://www.baidu.com"
+                    type="application/x-google-chrome-pdf"
+                    >
+                    </iframe>
+                </div>
+            </el-drawer>
+        </div> -->
+        <anno-open-file  :visible="visible.fileDialog" v-if="openfile"  v-model="fileRow"></anno-open-file>
+
     </div>
 </template>
 <script>
@@ -170,6 +190,7 @@
                 visible: {
                     fileDialog: 0
                 },
+                pdfurl: '',
                 span: 8,
                 currentFolder: { ID: "0", name: "根目录" },
                 //当前目录下的文件夹和文件列表
@@ -387,7 +408,7 @@
                         if (data.status) {
                             that.docList = data.outputData;
 
-                            //加载文件区根目录的内容
+                            //加载文件区根目录的内容pdfurl
                             that.loadCurrentFolder(folderObj);
                             //更新数据后，重置该状态
                             that.isModifiedState = false;
@@ -687,8 +708,30 @@
                     //文件预览
                     this.openfile = true;
                     this.visible.fileDialog = new Date().getTime();
-                    this.$message("预览文件【" + row.name + "】");
                     this.fileRow = row;
+                    // this.$message("预览文件【" + row.name + "】");
+                }
+            },
+            handleClose() {
+                this.dialogVisible = false
+             },
+            openFiletType(row) {
+                //修改文件名称
+                let input = anno.getInput();
+                let param = {ID: row.ID}
+                if(row.extName === "pdf") {
+                    input.doc = param;
+                    let url = "Anno.Plugs.Logic/KNDocument/GetDocumentModelById";
+                    anno.process(input, url, function (data) {
+                        console.log("打开->", data);
+                        if (data.status) {
+                        let blob = new Blob([res.data], { type: "application/pdf" });
+                        const url = URL.createObjectURL(blob);
+                        
+                        // this.pdfurl = url;
+
+                        }
+                    });
                 }
             },
             rowModify: function (row) {

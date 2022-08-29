@@ -1,26 +1,28 @@
 <template>
   <div class="viewItemFile">
-    <el-drawer
-      title="我是标题"
-      :visible.sync="dialogVisible"
-      :direction="direction"
-      size="100%"
-      :before-close="handleClose">
+        <el-drawer
+            title="我是标题"
+            :visible.sync="dialogVisible"
+            size="100%"
+            :direction="direction"
+            :before-close="handleClose"
+            >
 
-         <!-- pdf用嵌套的iframe -->
-         <slot>
-
-          <!-- <div v-if="fileRowData.extName == 'pdf'">
-            11
-            <iframe
-              :src="pdfurl"
-              type="application/x-google-chrome-pdf"
-              width="100%"
-              height="100%"
-            />
-          </div> -->
-         </slot>
-    </el-drawer>
+                <!-- pdf用嵌套的iframe -->
+                <!-- <slot> -->
+                        <!-- :src="pdfurl" -->
+                        <!-- type="application/x-google-chrome-pdf" -->
+                    <div >
+                        <iframe
+                        width="100%"
+                        height="100%"
+                        src="http://www.baidu.com"
+                        type="application/x-google-chrome-pdf"
+                        >
+                        </iframe>
+                    </div>
+                <!-- </slot> -->
+            </el-drawer>
   </div>
 </template>
 <script>
