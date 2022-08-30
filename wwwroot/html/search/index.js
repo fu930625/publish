@@ -160,16 +160,25 @@ function Init() {
           // }
         }, methods: {
           handleClickUrl(item) {
-            // window.open(item.href, '_blank')
             window.location.href = item.url
           },
           handleSearch(value) {
+            debugger
             console.log("value",value)
             this.isSearchResult = false;
-            var input = anno.getInput();
             let that = this;
-            input.pdf_keywords = value;
-              anno.process(input,"127.0.0.1:8983/solr/ImportPDFCore/select", function (data) {
+            let param = {q: 'pdf_keywords:'+value}
+            // window.$.ajax({
+            //     url: "http://localhost:8983/solr/ImportPDFCore/select",
+            //       type: "GET",
+            //       dataType: "jsonp", //指定服务器返回的数据类型
+            //       data: param,
+            //       success: function (data) {
+            //         console.log("data",data)
+            //       }
+            //   });
+              anno.axios(param,"http://localhost:8983/solr/ImportPDFCore/select", function (data) {
+                debugger
               if (data.status) {
               } else {
                 that.$message.error(data.msg);

@@ -18,6 +18,7 @@
             async: anno.ajaxpara.async,
             dataType: anno.ajaxpara.dataType,
             data: input,
+ 
             success: function (data, status) {
                 if (status === "success" && data.status && (data.msg === null || data.msg === "")) {
                     callback(data, status);
@@ -27,8 +28,55 @@
                     callback(data, status);
                 }
             }
-        }
-        );
+        } );
+    },
+    process_blob: function (input, url, callback, errorCallBack) {
+        window.$.ajax({
+            url: anno.ajaxpara.src + url + "?t=" + new Date().getMilliseconds(),
+            type: anno.ajaxpara.type,
+            async: anno.ajaxpara.async,
+            dataType: anno.ajaxpara.dataType,
+            data: input,
+            responseType: "blob",
+      
+            success: function (data, status) {
+                if (status === "success" && data.status && (data.msg === null || data.msg === "")) {
+                    callback(data, status);
+                } else if (errorCallBack !== null && errorCallBack !== undefined) {
+                    errorCallBack(data, status);
+                } else {
+                    callback(data, status);
+                }
+            }
+        } );
+    },
+    ajaxParam: {
+        async: true,
+        dataType: "json",
+        type: 'get',
+        src: window.location.origin === undefined
+        ? window.location.protocol + "//" + window.location.host + "/solr/"
+        : window.location.origin + "/solr/" //兼容老版本IE origin
+    },
+    axios: function (param,url,callback, errorCallBack) {
+        console.log(" window.location.protocol", window.location.protocol, window.location.host,window.location.origin)
+        window.$.ajax({
+            url: url,
+            type: anno.ajaxParam.type,
+            dataType: "json", //指定服务器返回的数据类型
+            async: anno.ajaxParam.async,
+            //dataType: anno.ajaxParam.dataType,
+            data: param,
+            success: function (data, status) {
+                if (status === "success" && data.status && (data.msg === null || data.msg === "")) {
+                    callback(data, status);
+                } else if (errorCallBack !== null && errorCallBack !== undefined) {
+                    errorCallBack(data, status);
+                } else {
+                    callback(data, status);
+                }
+            }
+        } );
     },
     watch: function (obj, attr, callback) {
         if (typeof obj.defaultValues === 'undefined') {
