@@ -88,42 +88,34 @@ module.exports = {
       let param = "{ID: "+row.ID+"}";
       input.doc = param;
       let url = "Anno.Plugs.Logic/KNDocument/GetDocumentModelById";
-      // anno.process_blob(input, url, function (data) {
-      //     if (data.status) {
-            // debugger
-            // let res = data.outputData;
-            // if(row.extName === "pdf") {
-            //   const blob = that.base64ToBlob(res.Content,'application/pdf')
-            //   if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            //     window.navigator.msSaveOrOpenBlob(blob)
-            //   } else {
-            //     const fileURL = URL.createObjectURL(blob);
-            //   console.log("fileURL",fileURL)
-
-            //     that.pdfurl = fileURL
-            //     // window.open(fileURL)
-            //   }
-            // } else {
-          anno.process_blob(input, url, function (data) {
+      let type = '';
+      if(row.extName) {
+        type = 'blob'
+      } else {
+        type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      }
+      anno.process_blob(input, url, function (data) {
+          if (data.status) {
             let res = data.outputData;
-
-            const blob = that.base64ToBlob(res.Content,'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-             console.log("blob",blob)
-             const fileURL = URL.createObjectURL(blob)
-             console.log("fileURL",fileURL)
-
-              console.log("docx",docx)
-              console.log("that.$refs.file",that.$refs.file)
-              that.$nextTick(() => {
-                
-                  // docx.renderAsync(res, that.$refs.file).then(x => console.log("docx: finished",x))
-                // console.log("res.Content",res.Content)
-               docx.renderAsync(blob, that.$refs.file);
-              })
-          })
-            // }
-      //     }
-      // });
+            if(row.extName === "pdf") {
+              const blob = that.base64ToBlob(res.Content,'application/pdf')
+              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(blob)
+              } else {
+                const fileURL = URL.createObjectURL(blob);
+                 console.log("fileURL",fileURL)
+                that.pdfurl = fileURL
+                // window.open(fileURL)
+              }
+            } else {
+              const blob = that.base64ToBlob(res.Content,'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+              const fileURL = URL.createObjectURL(blob)
+                that.$nextTick(() => {
+                  docx.renderAsync(blob, that.$refs.file);
+                })
+            }
+          }
+      });
     },
 
     // 通过base64解析打开文件

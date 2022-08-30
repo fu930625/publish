@@ -30,7 +30,7 @@
             }
         } );
     },
-    process_blob: function (input, url, callback, errorCallBack) {
+    process_blob: function (input, url,callback, errorCallBack) {
         window.$.ajax({
             url: anno.ajaxpara.src + url + "?t=" + new Date().getMilliseconds(),
             type: anno.ajaxpara.type,
