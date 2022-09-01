@@ -351,9 +351,13 @@
                     switch (type) {
                         case 'folder': url = "../img/Icon/folder.png"
                             break;
-                        case 'docx' || 'doc': url = "../img/Icon/word.png"
+                        case 'docx' : url = "../img/Icon/word.png"
                             break;
-                        case 'xlsx' || 'xls': url = "../img/Icon/excel.png"
+                        case 'doc' : url = "../img/Icon/word.png"
+                            break;
+                        case 'xlsx' : url = "../img/Icon/excel.png"
+                            break;
+                        case 'xls': url = "../img/Icon/excel.png"
                             break;
                         case 'pdf': url = "../img/Icon/pdf.png"
                             break;

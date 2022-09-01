@@ -167,7 +167,9 @@ function Init() {
             console.log("value",value)
             this.isSearchResult = false;
             let that = this;
-            let param = {q: 'pdf_keywords:'+value}
+            let param = {q: 'pdf_keywords:'+value};
+            //let param = {q: 'pdf_keywords:'+value,hl:{fl:'pdf_keywords',simple:{post:'<em>',pre:'</em>'}}}
+            //hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on
             // window.$.ajax({
             //     url: "http://localhost:8983/solr/ImportPDFCore/select",
             //       type: "GET",
@@ -177,11 +179,11 @@ function Init() {
             //         console.log("data",data)
             //       }
             //   });
-              anno.axios(param,"http://localhost:8983/solr/ImportPDFCore/select", function (data) {
+              anno.axios(param,"/solr/ImportPDFCore/select?hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on", function (data) {
                 debugger
               if (data.status) {
               } else {
-                that.$message.error(data.msg);
+                // that.$message.error(data.msg);
               }
             });
             // window.location.href = './result.html';
