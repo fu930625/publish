@@ -16,9 +16,9 @@
               </div>
               <div class="search-result_content">
                 <p class="seacrh-result-total">为您找到了相关结果95个</p>
-                <ul class="search-result_total">
+              {{resultList}}  <ul class="search-result_total">
                   <li class="search-result_li"  v-for="item in resultList">
-                    <h3>{{item.name}}</h3>
+                    <h3>{{item.title}}</h3>
                     <!-- <p class="search_result_title">{{item.name}}</p> -->
                     <span v-html="searchColor(item.detail)"></span>
                     <p class="search-result_bottom">

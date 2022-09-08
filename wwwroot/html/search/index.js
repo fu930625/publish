@@ -134,22 +134,22 @@ function Init() {
             },
           ],
           resultList: [
-            {
-              name: '北京故宫博物院',
-              detail: '北京故宫博物院建立于1925年,是在明朝、清朝两代皇宫及其收藏的基础上建立起来的中国综合性博物馆,也是中国最大的古代文化艺术博物馆,其文物收藏只要来源于清代宫中旧藏。',
-              Contributor: '单霁翔',
-              date: '2022-7-1',
-              fabulous: '3万赞同',
-              Collection: '5.8万收藏'
-            },
-            {
-              name: '北京故宫博物院',
-              detail: '北京故宫博物院建立于1925年,是在明朝、清朝两代皇宫及其收藏的基础上建立起来的中国综合性博物馆,也是中国最大的古代文化艺术博物馆,其文物收藏只要来源于清代宫中旧藏。',
-              Contributor: '单霁翔',
-              date: '2022-7-1',
-              fabulous: '3万赞同',
-              Collection: '5.8万收藏'
-            },
+            // {
+            //   title: '北京故宫博物院',
+            //   detail: '北京故宫博物院建立于1925年,是在明朝、清朝两代皇宫及其收藏的基础上建立起来的中国综合性博物馆,也是中国最大的古代文化艺术博物馆,其文物收藏只要来源于清代宫中旧藏。',
+            //   Contributor: '单霁翔',
+            //   date: '2022-7-1',
+            //   fabulous: '3万赞同',
+            //   Collection: '5.8万收藏'
+            // },
+            // {
+            //   title: '北京故宫博物院',
+            //   detail: '北京故宫博物院建立于1925年,是在明朝、清朝两代皇宫及其收藏的基础上建立起来的中国综合性博物馆,也是中国最大的古代文化艺术博物馆,其文物收藏只要来源于清代宫中旧藏。',
+            //   Contributor: '单霁翔',
+            //   date: '2022-7-1',
+            //   fabulous: '3万赞同',
+            //   Collection: '5.8万收藏'
+            // },
           ],
           red_text: '北京 博物院',
           // formData: {
@@ -163,30 +163,46 @@ function Init() {
             window.location.href = item.url
           },
           handleSearch(value) {
-            debugger
             console.log("value",value)
             this.isSearchResult = false;
             let that = this;
-            let param = {q: 'pdf_keywords:'+value};
-            //let param = {q: 'pdf_keywords:'+value,hl:{fl:'pdf_keywords',simple:{post:'<em>',pre:'</em>'}}}
-            //hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on
-            // window.$.ajax({
-            //     url: "http://localhost:8983/solr/ImportPDFCore/select",
-            //       type: "GET",
-            //       dataType: "jsonp", //指定服务器返回的数据类型
-            //       data: param,
-            //       success: function (data) {
-            //         console.log("data",data)
-            //       }
-            //   });
-              anno.axios(param,"/solr/ImportPDFCore/select?hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on", function (data) {
-                debugger
-              if (data.status) {
-              } else {
-                // that.$message.error(data.msg);
-              }
-            });
-            // window.location.href = './result.html';
+            if(value) {
+              let param = {q: 'pdf_keywords:'+value};
+                anno.axios(param,"/solr/ImportPDFCore/select?hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on", function (data) {
+                let res = data.response.docs;
+                let hight = data.highlighting;
+                  if (res.length  > 0) {
+                    res.forEach( item => {
+                      let obj = {};
+                      for(let key in hight) {
+                        if(item.id === key) {
+                          let constent = hight[key].pdf_keywords;
+                              constent= constent.toString()
+                          obj = {
+                            id: item.id,
+                            title: item.title,
+                            Contributor: item.uploader,
+                            detail: constent
+                          }
+                        }    
+                      }
+                       window.location.href = './result.html';
+                      that.resultList.push(obj)
+                      console.log("that.resultList",that.resultList)
+                    })
+                    // that.setTimeout(function(){
+
+                    // },3000)
+                   
+
+                } else {
+
+                }
+              });
+            } else {
+              that.$message.warning('请输入查询条件');
+              return
+            }
           },
           hightLight(el, binding) {
             const match = binding.value;
