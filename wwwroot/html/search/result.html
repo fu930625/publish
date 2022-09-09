@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="search" >
-          <div class="search-result">
+          <div class="search-result"> 
               <div class="search-result_header">
                 <img src="../../img/search.png" class="search-result_img">
                 <el-input v-model="input" placeholder="请输入内容" class="search-result_input"></el-input>
@@ -16,7 +16,7 @@
               </div>
               <div class="search-result_content">
                 <p class="seacrh-result-total">为您找到了相关结果95个</p>
-              {{resultList}}  <ul class="search-result_total">
+              <ul class="search-result_total">
                   <li class="search-result_li"  v-for="item in resultList">
                     <h3>{{item.title}}</h3>
                     <!-- <p class="search_result_title">{{item.name}}</p> -->

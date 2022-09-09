@@ -11,6 +11,7 @@ function Init() {
         data: {
           input: '',
           isSearchResult: true,
+          isResult: false,
           selectOptions: [{
             value: '选项1',
             label: '黄金糕'
@@ -133,6 +134,10 @@ function Init() {
               index: '10'
             },
           ],
+          breadResult: false,
+          breadcrumbList: [
+            { id:1, name:'返回'}
+          ],
           resultList: [
             // {
             //   title: '北京故宫博物院',
@@ -151,11 +156,11 @@ function Init() {
             //   Collection: '5.8万收藏'
             // },
           ],
-          red_text: '北京 博物院',
+          red_text: '防疫政策',
           // formData: {
             total: 0,
             currentPage: 1,
-            pagesize: 20,
+            pagesize: 10,
             pagesizes: [10, 20, 30, 40]
           // }
         }, methods: {
@@ -164,8 +169,9 @@ function Init() {
           },
           handleSearch(value) {
             console.log("value",value)
-            this.isSearchResult = false;
             let that = this;
+            // that.red_text = value;
+            that.breadResult = true;
             if(value) {
               let param = {q: 'pdf_keywords:'+value};
                 anno.axios(param,"/solr/ImportPDFCore/select?hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on", function (data) {
@@ -186,17 +192,15 @@ function Init() {
                           }
                         }    
                       }
-                       window.location.href = './result.html';
+                      //  window.location.href = './result.html';
                       that.resultList.push(obj)
                       console.log("that.resultList",that.resultList)
                     })
-                    // that.setTimeout(function(){
-
-                    // },3000)
-                   
-
+                    that.isSearchResult = false;
+                    that.isResult = true;
                 } else {
-
+                  that.$message('没有查找到相关数据')
+                  return
                 }
               });
             } else {
@@ -229,7 +233,6 @@ function Init() {
               });
             }
             return str
-
           },
 
         searchResultTableList() {
@@ -248,6 +251,9 @@ function Init() {
           
         }, created: function () {
             $("#search").show();
+            // $("#testEm").style.color ="red"
+           const test =  document.getElementById("testEm");
+           console.log("test",test)
         },
         directives: {
           textLight: { // 为元素设置指定的字体颜色

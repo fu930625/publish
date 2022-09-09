@@ -7,8 +7,13 @@
 </head>
 <body>
     <div id="search" >
-          <div class="search-name">
-            <template v-if="isSearchResult">
+          <div class="upload-title" v-if="breadResult">
+            <span v-for="(item,index) in breadcrumbList" @click="breadcrumbClick(item)" :key="item.id">
+              <a>{{item.name}}</a>
+              <i  class="el-icon-arrow-right"></i>
+            </span>
+          </div>
+          <div class="search-name" v-if="isSearchResult">
                 <div class="search-img">
                   <img src="../../img/search.png" class="search-img_png">
                 </div>
@@ -40,11 +45,45 @@
                         </ul>
                       </div>
                 </div>
-            </template>
           </div>
-          <div>
-
+          <div  v-if="isResult">
+              <div class="search-result" > 
+                <div class="search-result_header">
+                  <img src="../../img/search.png" class="search-result_img">
+                  <el-input v-model="input" placeholder="请输入内容" class="search-result_input"></el-input>
+                  <el-button type="primary" class="search-result_btn" @click="handleSearch">搜索一下</el-button>
+                </div>
+                <div class="search-result_content">
+                  <p class="seacrh-result-total">为您找到了相关结果95个</p>
+                 <ul class="search-result_total">
+                    <li class="search-result_li"  v-for="item in resultList" id="testEm">
+                      <h3>{{item.title}}</h3>
+                      <!-- <p class="search_result_title">{{item.name}}</p> -->
+                      <span v-html="searchColor(item.detail)"></span>
+                      <p class="search-result_bottom">
+                        <span>{{item.Contributor}}</span>
+                        <span class="search-result_date">{{item.date}}</span>
+                        <span class="search-result_fabu">{{item.fabulous}}</span>
+                        <span >{{item.Collection}}</span>
+                      </p>
+                    </li>
+                  </ul>
+                  <div class="block" style="text-align:center">
+                <el-pagination 
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="pagesizes"
+                    :page-size="pagesize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+                </div>
+                </div>
+            </div>
           </div>
+        <div>
+      </div>
     </div>
 </body>
 
@@ -150,6 +189,75 @@
     .search-li :hover {
       cursor:pointer;
       color:#409EFF
+    }
+    .upload-title {
+      padding: 8px
+    }
+    .el-icon-arrow-right:before {
+     content: "\e6e0";
+    }
+    .search-result {
+      position:relative;
+     background-color: #f2f2f5;
+      padding: 12px;
+      width: 100%;
+    }
+    .search-result_header {
+      text-align: center;
+     margin-top: 80px;
+    }
+    .search-result_input {
+      width: 50%;
+      display: inline-block;
+      margin: 0 10px;
+    }
+    .search-result_img {
+      width: 40px;
+      height: 40px;
+      vertical-align: middle;
+    }
+    .el-input__inner {
+      border-radius: 14px;
+      height: 46px;
+    }
+    .search-result_btn {
+      border-radius: 12px;
+    }
+    .search-result_content {
+      width: 720px;
+      margin: 0 auto;
+      font-size: 14px;  
+    }
+    .search-result_total {
+      list-style-type: none
+    }
+    .seacrh-result-total {
+      font-size: 14px;
+      color:#999;
+      margin-left: 46px;
+    }
+    .search-result_li {
+      background-color: #fff;
+      border-radius: 12px;
+      min-height: 70px;
+      min-width: 700px;
+      display: inline-block;
+       border-radius: 12px;
+       padding: 8px 8px 0px 8px;
+       margin-bottom: 20px;
+    }
+    .search_result_title {
+      font-size: 16px;
+    }
+
+    .search-result_bottom {
+      color:#999;
+    }
+    .search-result_date {
+      padding: 0 100px 0 50px;
+    }
+    .search-result_fabu {
+      padding: 0 50px 0 200px;
     }
 </style>
 </html>

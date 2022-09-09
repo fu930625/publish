@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="upload-title">
-
 			<span v-for="(item,index) in breadcrumbList" @click="breadcrumbClick(item)" :key="item.ID">
 				<i v-if="index>0" class="el-icon-arrow-right"></i>
 				<a>{{item.name}}</a>
@@ -413,9 +412,7 @@
             //加载指定文件夹的内容
             loadCurrentFolder: function (folderObj) {
                 let that = this;
-                //debugger;
                 that.currentFolderData = [];
-
                 that.folderList.forEach(function (f, index) {
                     if (f.FolderType == 0 && f.ParentId == folderObj.ID && !f.IsDeleted) {
                         that.currentFolderData.push({
@@ -445,7 +442,6 @@
                         })
                     }
                 });
-
                 //收集面包屑数组
                 that.breadcrumbList.push(folderObj);
             },
@@ -453,13 +449,11 @@
             breadcrumbClick: function (folder) {
 
                 let lastIndex = this.breadcrumbList.length - 1;
-                console.log("breadcrumbList切换前-->", this.breadcrumbList);
                 if (this.breadcrumbList[lastIndex].ID == folder.ID) {
                     this.$message("当前目录，无须切换");
                     return;
                 }
                 this.$message("切换到【" + folder.name + "】目录");
-
                 this.LoadFolderData(folder);
                 for (let i = lastIndex; i >= 0; i--) {
                     let obj = this.breadcrumbList[i];
@@ -470,11 +464,8 @@
                         break;
                     }
                 }
-
-                //切换后设置当前目录
+             //切换后设置当前目录
                 this.currentFolder = folder;
-                console.log("breadcrumbList切换后-->", this.breadcrumbList);
-                console.log("切换后-->", this.currentFolder);
 
             },
             onbeforeUpload: function (file) {
@@ -521,8 +512,6 @@
             onUploadChange: function (file, fileList) {
             },
             onUploadSuccess: function (response, file, fileList) {
-                console.log("onUploadSuccess-->", response);
-                console.log("onUploadSuccess-file->", file);
                 let obj = {
                     ID: response.outputData.ID,
                     type: "doc",
@@ -540,7 +529,7 @@
                 this.isModifiedState = true;
             },
             onUploadError: function (err, file, fileList) {
-                console.log("onUploadError-->", err);
+
             },
 
             addFolder: function () {
@@ -559,11 +548,9 @@
             },
             submitModify: function (row) {
                 let that = this;
-                that.$message("提交编辑结果");
                 if (row.type == "folder") {
                     //新建文件夹
                     if (row.ID == 0) {
-
                         let profile = localStorage.profile;
                         let input = anno.getInput();
                         input.ufolder = '{FolderName:"' + row.name + '",CreaterID:"' + that.userInfo.ID
@@ -572,7 +559,11 @@
                             if (data.status) {
                                 row.ID = data.outputData.ID;
                             }
-                            that.$message(data.msg);
+                            if(data.status) {
+                                that.$message.success(data.msg);
+                            } else {
+                                 that.$message(data.msg)
+                            }
                         });
                     } else {
                         //修改文件夹名称
@@ -582,8 +573,10 @@
                         anno.process(input, "Anno.Plugs.Logic/KNDocument/UpdateFolderName", function (data) {
                             console.log("UpdateFolderName-->", data);
                             if (data.status) {
+                                that.$message.success(data.msg);
+                            } else {
+                                that.$message(data.msg);
                             }
-                            that.$message(data.msg);
                         });
                     }
 
@@ -595,8 +588,10 @@
                     anno.process(input, "Anno.Plugs.Logic/KNDocument/UpdateDocName", function (data) {
                         console.log("UpdateDocName-->", data);
                         if (data.status) {
+                            that.$message.success(data.msg);
+                        } else {
+                            that.$message(data.msg);
                         }
-                        that.$message(data.msg);
                     });
                 }
 
@@ -629,7 +624,7 @@
             },
 
             rowModify: function (row) {
-                this.$message("行编辑");
+                this.$message.warning("行编辑");
                 if (!row.isModifiedRow)
                     row["isModifiedRow"] = true;
             },
