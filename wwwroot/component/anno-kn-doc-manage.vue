@@ -145,29 +145,7 @@
                 <el-button type="primary" @click="moveSubmit">确 定</el-button>
             </div>
         </el-dialog>
-        <!-- 打开文件类型 -->
-        <!-- <div>
-         <el-drawer
-            title="我是标题"
-            :visible.sync="dialogVisible"
-            size="100%"
-            :direction="direction"
-            :before-close="handleClose"
-            >
-
-                <div>
-                    <iframe
-                    width="100%"
-                    height="100%"
-                    src="http://www.baidu.com"
-                    type="application/x-google-chrome-pdf"
-                    >
-                    </iframe>
-                </div>
-            </el-drawer>
-        </div> -->
         <anno-open-file  :visible="visible.fileDialog" v-if="openfile"  v-model="fileRow"></anno-open-file>
-
     </div>
 </template>
 <script>
@@ -447,7 +425,7 @@
             },
             //导航区的目录点击时，重新加载接口数据，并打开对应目录
             breadcrumbClick: function (folder) {
-
+               
                 let lastIndex = this.breadcrumbList.length - 1;
                 if (this.breadcrumbList[lastIndex].ID == folder.ID) {
                     this.$message("当前目录，无须切换");

@@ -171,7 +171,6 @@ function Init() {
             console.log("value",value)
             let that = this;
             // that.red_text = value;
-            that.breadResult = true;
             if(value) {
               let param = {q: 'pdf_keywords:'+value};
                 anno.axios(param,"/solr/ImportPDFCore/select?hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on", function (data) {
@@ -193,6 +192,9 @@ function Init() {
                         }    
                       }
                       //  window.location.href = './result.html';
+                      that.breadResult = true;
+                      that.isSearchResult = false;
+                      that.isResult = true
                       that.resultList.push(obj)
                       console.log("that.resultList",that.resultList)
                     })
@@ -234,10 +236,14 @@ function Init() {
             }
             return str
           },
+          breadcrumbClick(item) {
+            this.breadResult = false;
+            this.isSearchResult = true;
+            this.isResult = false
+          },
 
         searchResultTableList() {
-          // 请求接口
-          // this.resultList = res;
+
         },
         handleSizeChange (v) {
             this.pagesize = v;
@@ -251,7 +257,6 @@ function Init() {
           
         }, created: function () {
             $("#search").show();
-            // $("#testEm").style.color ="red"
            const test =  document.getElementById("testEm");
            console.log("test",test)
         },
