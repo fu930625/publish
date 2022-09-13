@@ -2,8 +2,9 @@
 /// <reference path="../../js/base.js" />
 var vm = null, _isMobile = false;
 $(function () {
-    Init();
+  Init();
 });
+
 
 function Init() {
     vm = new Vue({
@@ -156,55 +157,21 @@ function Init() {
             //   Collection: '5.8万收藏'
             // },
           ],
+          inputValue: '',
           red_text: '防疫政策',
-          // formData: {
-            total: 0,
-            currentPage: 1,
-            pagesize: 10,
-            pagesizes: [10, 20, 30, 40]
-          // }
+          total: 0,
+          currentPage: 0,
+          pagesize: 5,
+          pagesizes: [5, 10, 30, 40]
         }, methods: {
           handleClickUrl(item) {
             window.location.href = item.url
           },
           handleSearch(value) {
             console.log("value",value)
-            let that = this;
-            // that.red_text = value;
+            this.inputValue = value;
             if(value) {
-              let param = {q: 'pdf_keywords:'+value};
-                anno.axios(param,"/solr/ImportPDFCore/select?hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on", function (data) {
-                let res = data.response.docs;
-                let hight = data.highlighting;
-                  if (res.length  > 0) {
-                    res.forEach( item => {
-                      let obj = {};
-                      for(let key in hight) {
-                        if(item.id === key) {
-                          let constent = hight[key].pdf_keywords;
-                              constent= constent.toString()
-                          obj = {
-                            id: item.id,
-                            title: item.title,
-                            Contributor: item.uploader,
-                            detail: constent
-                          }
-                        }    
-                      }
-                      //  window.location.href = './result.html';
-                      that.breadResult = true;
-                      that.isSearchResult = false;
-                      that.isResult = true
-                      that.resultList.push(obj)
-                      console.log("that.resultList",that.resultList)
-                    })
-                    that.isSearchResult = false;
-                    that.isResult = true;
-                } else {
-                  that.$message('没有查找到相关数据')
-                  return
-                }
-              });
+              this.searchResultTableList()
             } else {
               that.$message.warning('请输入查询条件');
               return
@@ -242,7 +209,45 @@ function Init() {
             this.isResult = false
           },
 
-        searchResultTableList() {
+          searchResultTableList() {
+            that = this;
+            console.log("currentPage",that.currentPage)
+            console.log("pagesize",that.pagesize)
+
+          let param = {q: 'pdf_keywords:'+this.inputValue,start: that.currentPage,row: that.pagesize};
+          anno.axios(param,"/solr/ImportPDFCore/select?hl.fl=pdf_keywords&hl.simple.post=%3C%2Fem%3E&hl.simple.pre=%3Cem%3E&hl=on", function (data) {
+          let res = data.response.docs;
+          let hight = data.highlighting;
+          that.resultList = [];
+            if (res.length  > 0) {
+              res.forEach( item => {
+                let obj = {};
+                for(let key in hight) {
+                  if(item.id === key) {
+                    let constent = hight[key].pdf_keywords;
+                        constent= constent.toString()
+                    obj = {
+                      id: item.id,
+                      title: item.title,
+                      Contributor: item.uploader,
+                      detail: constent
+                    }
+                  }    
+                }
+                that.breadResult = true;
+                that.isSearchResult = false;
+                that.isResult = true
+                that.resultList.push(obj)
+                that.total = that.resultList.length;
+                console.log("that.resultList",that.resultList)
+              })
+              that.isSearchResult = false;
+              that.isResult = true;
+          } else {
+            that.$message('没有查找到相关数据')
+            return
+          }
+        });
 
         },
         handleSizeChange (v) {
@@ -253,12 +258,13 @@ function Init() {
         handleCurrentChange (v) {
           this.currentPage = v;
           this.searchResultTableList()
+
         },
           
         }, created: function () {
             $("#search").show();
            const test =  document.getElementById("testEm");
-           console.log("test",test)
+
         },
         directives: {
           textLight: { // 为元素设置指定的字体颜色

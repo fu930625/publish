@@ -51,10 +51,10 @@
                 <div class="search-result_header">
                   <img src="../../img/search.png" class="search-result_img">
                   <el-input v-model="input" placeholder="请输入内容" class="search-result_input"></el-input>
-                  <el-button type="primary" class="search-result_btn" @click="handleSearch">搜索一下</el-button>
+                  <el-button type="primary" class="search-result_btn" @click="handleSearch(input)">搜索一下</el-button>
                 </div>
                 <div class="search-result_content">
-                  <p class="seacrh-result-total">为您找到了相关结果95个</p>
+                  <p class="seacrh-result-total">为您找到了相关结果{{total}}个</p>
                  <div class="search-result_total">
                     <div class="search-result_li"  v-for="item in resultList" id="testEm">
                       <h3>{{item.title}}</h3>
