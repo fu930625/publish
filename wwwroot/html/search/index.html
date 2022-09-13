@@ -55,10 +55,9 @@
                 </div>
                 <div class="search-result_content">
                   <p class="seacrh-result-total">为您找到了相关结果95个</p>
-                 <ul class="search-result_total">
-                    <li class="search-result_li"  v-for="item in resultList" id="testEm">
+                 <div class="search-result_total">
+                    <div class="search-result_li"  v-for="item in resultList" id="testEm">
                       <h3>{{item.title}}</h3>
-                      <!-- <p class="search_result_title">{{item.name}}</p> -->
                       <span v-html="searchColor(item.detail)"></span>
                       <p class="search-result_bottom">
                         <span>{{item.Contributor}}</span>
@@ -66,20 +65,20 @@
                         <span class="search-result_fabu">{{item.fabulous}}</span>
                         <span >{{item.Collection}}</span>
                       </p>
-                    </li>
-                  </ul>
-                  <div class="block" style="text-align:center">
-                <el-pagination 
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    :page-sizes="pagesizes"
-                    :page-size="pagesize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
-                </el-pagination>
+                    </div>
+                  </div>
                 </div>
-                </div>
+                <div class="block" style="text-align:center">
+                  <el-pagination 
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      :current-page="currentPage"
+                      :page-sizes="pagesizes"
+                      :page-size="pagesize"
+                      layout="total, sizes, prev, pager, next, jumper"
+                      :total="total">
+                  </el-pagination>
+              </div>
             </div>
           </div>
         <div>
@@ -117,31 +116,37 @@
     .search-img {
       text-align: center;
       vertical-align: middle;
-      height: 300px;
+      height: 240px;
       display: block;
       margin-right: 100px;
     }
     .search-content {
-      /* margin-left: 100px; */
       text-align: center;
     }
     .search-input {
-      width: 427px;
+      width: 71%;
       border-right: 1px solid #DCDFE6;
+      height: 40px;
     }
     .search-select {
-      width: 114px
+      width: 114px;
+      height: 40px;
     }
     .search-btn {
       width: 100px;
       border-radius: 10px;
 
     }
+    .el-input__inner {
+    }
     .search-input  .el-input__inner {
       border: none;
+      height: 40px!important;
+
     }
     .search-select  .el-input__inner {
       border-left: 1px solid #DCDFE6;
+      height: 40px;
       border: none;
     }
     .search-left {
@@ -152,9 +157,8 @@
       margin-right: 16px;
     }
     .search-img_png {
-      width: 230px;
-      height: 230px;
-      padding-top: 26px
+      width: 218px;
+      height: 216px;
     }
     .search-hot_history {
       font-size: 16px;
@@ -204,10 +208,10 @@
     }
     .search-result_header {
       text-align: center;
-     margin-top: 80px;
+      margin-top: 80px;
     }
     .search-result_input {
-      width: 50%;
+      width: 48%;
       display: inline-block;
       margin: 0 10px;
     }
@@ -234,7 +238,6 @@
     .seacrh-result-total {
       font-size: 14px;
       color:#999;
-      margin-left: 46px;
     }
     .search-result_li {
       background-color: #fff;
