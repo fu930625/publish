@@ -249,7 +249,7 @@
 </script>
 <style scoped>
     .el-button {
-        font-size: 10px;
+        font-size: 14px;
     }
 
     .warning-row {

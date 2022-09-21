@@ -33,10 +33,34 @@
             display: -webkit-flex;
             display: flex;
         }
-
-            .l-form-buttons li div {
-                margin: 0 auto;
-            }
+        .l-layout-center {
+            width:62.3%; 
+            left:1px; 
+            top: 1px;
+            box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+            border-radius: 10px;
+            margin: 20px 10px 0 20px ;
+        }
+        .l-layout-right {
+            width: 33%;
+            min-width:250px; 
+            top: 1px;
+            right:1px;
+            position: fixed; 
+             box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+            border-radius: 10px;
+            margin: 20px 20px 0 0  ;
+        }
+        .cls-divedit {
+            float: right;
+            width: 600px;
+            height: 450px;
+            background-color: #B2C4CE;
+            display: none;
+        }
+        .l-form-buttons li div {
+            margin: 0 auto;
+        }
 
         .l-tree a, .l-tree span {
             color: #606266;
@@ -68,29 +92,22 @@
 </head>
 <body>
     <div id="layout1" class="l-layout" style="height: 100%;">
-        <div class="l-layout-center" style="width:69.3%; left:1px; top: 1px;">
+        <div class="l-layout-center">
             <div position="center" title="" class="l-layout-content">
-
                 <div>
-                    <div style="padding-left: 50px; float: left;">
+                    <div  style="padding-left: 50px; float: left;">
                         <div id="funTree" style="margin: 0; padding: 0">
                         </div>
                     </div>
-                    <div id="divedit" style="        float: right;
-        width: 600px;
-        height: 450px;
-        background-color: #B2C4CE;
-        display: none;
-">
+                    <div id="divedit"  class="cls-divedit">
                     </div>
                 </div>
 
             </div>
         </div>
-        <div class="l-layout-right" style="width: 30%;min-width:250px; top: 1px;right:1px; position: fixed;">
+        <div class="l-layout-right" >
             <div position="right" class="l-layout-content">
                 <div id="form">
-
                 </div>
             </div>
         </div>
